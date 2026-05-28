@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mike Brayshaw — Web & AI Development",
+  title: "Mike Kerr — Web & AI Development",
   description: "Full-stack web development, AI-powered SaaS, and digital products for Australian businesses.",
 };
 

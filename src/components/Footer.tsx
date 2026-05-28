@@ -6,7 +6,7 @@ export default function Footer() {
           <span className="font-bold text-white">MB<span className="text-slate-600">/dev</span></span>
           <span className="text-slate-600 text-sm">Perth, WA</span>
         </div>
-        <p className="text-slate-600 text-sm">© {new Date().getFullYear()} Mike Brayshaw. All rights reserved.</p>
+        <p className="text-slate-600 text-sm">© {new Date().getFullYear()} Mike Kerr. All rights reserved.</p>
         <div className="flex gap-5 text-sm">
           {[
             { label: "ManyHandz", url: "https://manyhandz.ai" },
