@@ -1,19 +1,20 @@
+"use client";
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 py-10">
+    <footer className="py-10 relative" style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "#000" }}>
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="font-bold text-white">MB<span className="text-slate-600">/dev</span></span>
-          <span className="text-slate-600 text-sm">Perth, WA</span>
-        </div>
-        <p className="text-slate-600 text-sm">© {new Date().getFullYear()} Mike Kerr. All rights reserved.</p>
-        <div className="flex gap-5 text-sm">
+        <span className="font-bold" style={{ color: "#06b6d4" }}>MK<span style={{ color: "rgba(255,255,255,0.2)" }}>/dev</span></span>
+        <p className="text-sm" style={{ color: "rgba(255,255,255,0.2)" }}>© {new Date().getFullYear()} Mike Kerr — Perth, WA</p>
+        <div className="flex gap-6 text-sm">
           {[
             { label: "ManyHandz", url: "https://manyhandz.ai" },
             { label: "DraftPilot", url: "https://draftpilot.co" },
             { label: "ShiftZip", url: "https://shiftzip.com.au" },
           ].map(l => (
-            <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors">
+            <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer"
+              style={{ color: "rgba(255,255,255,0.25)" }} className="transition-colors"
+              onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}>
               {l.label}
             </a>
           ))}

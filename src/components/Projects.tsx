@@ -1,194 +1,110 @@
 "use client";
-import { useState } from "react";
-import { ExternalLink, Globe, Bot, ShoppingCart, Cpu, Users, Zap } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ExternalLink, Bot, Zap, Users, Cpu, ShoppingCart, Globe } from "lucide-react";
 
 const projects = [
-  {
-    name: "ManyHandz",
-    tagline: "Managed AI-as-a-Service",
-    desc: "Fully managed OpenClaw AI platform for Australian businesses. Customers get their own isolated AI assistant with business memory, tool integrations, and dedicated support — zero setup required.",
-    url: "https://manyhandz.ai",
-    tags: ["SaaS", "AI", "Platform"],
-    icon: Bot,
-    color: "from-purple-500/20 to-blue-500/20",
-    border: "border-purple-500/20",
-    accent: "text-purple-400",
-    badge: "bg-purple-500/10 text-purple-400",
-    status: "Live",
-  },
-  {
-    name: "DraftPilot",
-    tagline: "AI Email Assistant",
-    desc: "AI-powered email drafting SaaS. Learns your tone, drafts replies, and handles inbox management — so you spend less time on email.",
-    url: "https://draftpilot.co",
-    tags: ["SaaS", "AI", "Productivity"],
-    icon: Zap,
-    color: "from-cyan-500/20 to-blue-500/20",
-    border: "border-cyan-500/20",
-    accent: "text-cyan-400",
-    badge: "bg-cyan-500/10 text-cyan-400",
-    status: "Live",
-  },
-  {
-    name: "ShiftZip",
-    tagline: "Staff Rostering Platform",
-    desc: "Modern staff rostering and communications platform for Australian businesses. Built for speed — publish rosters, notify staff, and manage availability all in one place.",
-    url: "https://shiftzip.com.au",
-    tags: ["SaaS", "HR", "Operations"],
-    icon: Users,
-    color: "from-green-500/20 to-emerald-500/20",
-    border: "border-green-500/20",
-    accent: "text-green-400",
-    badge: "bg-green-500/10 text-green-400",
-    status: "Live",
-  },
-  {
-    name: "Ossie Indoor",
-    tagline: "Beach Volleyball Operations",
-    desc: "Full operations stack for Ossie Indoor Beach Volleyball — fixture management, scoring app, POS system, player portal and an AI referee vision pipeline using computer vision.",
-    url: "https://ossieindoor.com.au",
-    tags: ["Operations", "AI Vision", "POS"],
-    icon: Cpu,
-    color: "from-orange-500/20 to-yellow-500/20",
-    border: "border-orange-500/20",
-    accent: "text-orange-400",
-    badge: "bg-orange-500/10 text-orange-400",
-    status: "Live",
-  },
-  {
-    name: "PokeCardMaker",
-    tagline: "Custom Pokémon Card Creator",
-    desc: "Design custom Pokémon-style cards and order them as real vinyl stickers. Built on Supabase with Stripe payments and a Roland BN2-30 print pipeline.",
-    url: "https://pokecardmaker.net",
-    tags: ["E-commerce", "Design Tool"],
-    icon: ShoppingCart,
-    color: "from-yellow-500/20 to-red-500/20",
-    border: "border-yellow-500/20",
-    accent: "text-yellow-400",
-    badge: "bg-yellow-500/10 text-yellow-400",
-    status: "Live",
-  },
-  {
-    name: "Glacier Air",
-    tagline: "Trades Business Website",
-    desc: "Modern marketing site for a Perth-based air conditioning and refrigeration company. Built with Next.js, Tailwind, deployed to Vercel.",
-    url: "https://glacierair.com.au",
-    tags: ["Website", "Next.js", "Client"],
-    icon: Globe,
-    color: "from-blue-500/20 to-indigo-500/20",
-    border: "border-blue-500/20",
-    accent: "text-blue-400",
-    badge: "bg-blue-500/10 text-blue-400",
-    status: "Live",
-  },
-  {
-    name: "TK Tiling & Stone",
-    tagline: "Premium Trades Website",
-    desc: "SEO-optimised website for a premium tiling contractor. Full meta, OpenGraph, LocalBusiness schema, sitemap — built to rank locally.",
-    url: "https://tktilingandstone.com.au",
-    tags: ["Website", "SEO", "Client"],
-    icon: Globe,
-    color: "from-stone-500/20 to-slate-500/20",
-    border: "border-stone-500/20",
-    accent: "text-stone-400",
-    badge: "bg-stone-500/10 text-stone-300",
-    status: "Live",
-  },
-  {
-    name: "MakOp Pro",
-    tagline: "Field Service Management",
-    desc: "SaaS platform for field service businesses — job scheduling, client management, invoicing and SMS notifications. Live with Glacier Air as first customer.",
-    url: "#",
-    tags: ["SaaS", "Field Service"],
-    icon: Zap,
-    color: "from-indigo-500/20 to-purple-500/20",
-    border: "border-indigo-500/20",
-    accent: "text-indigo-400",
-    badge: "bg-indigo-500/10 text-indigo-400",
-    status: "Beta",
-  },
+  { name: "ManyHandz", tagline: "Managed AI Platform", desc: "Full-stack managed AI-as-a-service for Aussie businesses. Isolated agents, business memory, tool integrations, Stripe billing.", url: "https://manyhandz.ai", tags: ["SaaS","AI","Platform"], icon: Bot, accent: "#c084fc", bg: "rgba(192,132,252,0.06)", border: "rgba(192,132,252,0.2)", status: "Live" },
+  { name: "DraftPilot", tagline: "AI Email Assistant", desc: "Learns your tone, drafts replies, manages your inbox. Built on Anthropic Claude with Next.js + Supabase.", url: "https://draftpilot.co", tags: ["SaaS","AI","Email"], icon: Zap, accent: "#06b6d4", bg: "rgba(6,182,212,0.06)", border: "rgba(6,182,212,0.2)", status: "Live" },
+  { name: "ShiftZip", tagline: "Staff Rostering SaaS", desc: "Modern rostering + comms platform for Australian businesses. Publish rosters, notify staff, manage availability.", url: "https://shiftzip.com.au", tags: ["SaaS","HR","Ops"], icon: Users, accent: "#4ade80", bg: "rgba(74,222,128,0.06)", border: "rgba(74,222,128,0.2)", status: "Live" },
+  { name: "Ossie Indoor", tagline: "Sports Ops + AI Vision", desc: "Full ops stack — fixture management, scoring app, POS, player portal + AI referee using computer vision on NVIDIA Jetson.", url: "https://ossieindoor.com.au", tags: ["AI Vision","POS","Operations"], icon: Cpu, accent: "#fb923c", bg: "rgba(251,146,60,0.06)", border: "rgba(251,146,60,0.2)", status: "Live" },
+  { name: "PokeCardMaker", tagline: "Custom Card Creator", desc: "Design Pokémon-style cards, order as vinyl stickers. Supabase + Stripe + Roland BN2-30 print pipeline.", url: "https://pokecardmaker.net", tags: ["E-commerce","Design"], icon: ShoppingCart, accent: "#facc15", bg: "rgba(250,204,21,0.06)", border: "rgba(250,204,21,0.2)", status: "Live" },
+  { name: "Glacier Air", tagline: "Trades Website", desc: "Modern Next.js site for Perth AC & refrigeration company. Hero image, project gallery, contact form.", url: "https://glacierair.com.au", tags: ["Website","Next.js"], icon: Globe, accent: "#38bdf8", bg: "rgba(56,189,248,0.06)", border: "rgba(56,189,248,0.2)", status: "Live" },
+  { name: "TK Tiling & Stone", tagline: "Premium Trades Site", desc: "SEO-optimised site with LocalBusiness schema, sitemap, OG tags, Cloudflare + Vercel.", url: "https://tktilingandstone.com.au", tags: ["Website","SEO"], icon: Globe, accent: "#94a3b8", bg: "rgba(148,163,184,0.06)", border: "rgba(148,163,184,0.2)", status: "Live" },
+  { name: "MakOp Pro", tagline: "Field Service SaaS", desc: "Job scheduling, client management, invoicing + SMS notifications for field service businesses.", url: "#", tags: ["SaaS","Field Service"], icon: Zap, accent: "#818cf8", bg: "rgba(129,140,248,0.06)", border: "rgba(129,140,248,0.2)", status: "Beta" },
 ];
 
-const filters = ["All", "SaaS", "Website", "AI", "Client"];
+function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const Icon = p.icon;
+  return (
+    <div
+      ref={ref}
+      className="glass-card rounded-2xl p-6 flex flex-col gap-4 group cursor-default"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(30px)",
+        transition: `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`,
+      }}
+    >
+      <div className="flex items-start justify-between">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ background: p.bg, border: `1px solid ${p.border}` }}>
+          <Icon className="w-5 h-5" style={{ color: p.accent }} />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="tag" style={{ color: p.accent, borderColor: p.border, background: p.bg }}>
+            {p.status}
+          </span>
+          {p.url !== "#" && (
+            <a href={p.url} target="_blank" rel="noopener noreferrer"
+              className="transition-colors" style={{ color: "rgba(255,255,255,0.2)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = p.accent)}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.2)")}>
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-white font-bold text-lg leading-tight">{p.name}</h3>
+        <p className="text-sm font-semibold mb-2" style={{ color: p.accent }}>{p.tagline}</p>
+        <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{p.desc}</p>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+        {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
+      </div>
+    </div>
+  );
+}
+
+const filters = ["All", "SaaS", "AI", "Website"];
 
 export default function Projects() {
   const [active, setActive] = useState("All");
-
-  const filtered = active === "All"
-    ? projects
-    : projects.filter(p => p.tags.some(t => t === active));
+  const filtered = active === "All" ? projects : projects.filter(p => p.tags.some(t => t.includes(active)));
 
   return (
-    <section id="work" className="py-32 relative">
-      {/* Section glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-transparent via-blue-500/30 to-transparent" />
+    <section id="work" className="py-32 relative" style={{ background: "#000" }}>
+      <div className="absolute inset-0 grid-bg opacity-50 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <p className="text-blue-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">Portfolio</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Things I&apos;ve Built</h2>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "#06b6d4" }}>
+            {"// portfolio"}
+          </p>
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Things I&apos;ve <span className="gradient-text">Built</span>
+          </h2>
+          <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.4)" }}>
             SaaS products, AI tools, and client websites — all production-grade and live.
           </p>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {filters.map(f => (
-            <button
-              key={f}
-              onClick={() => setActive(f)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                active === f
-                  ? "bg-blue-500 text-white"
-                  : "glass text-slate-400 hover:text-white"
-              }`}
-            >
+            <button key={f} onClick={() => setActive(f)}
+              className="px-5 py-2 rounded-lg text-sm font-semibold transition-all"
+              style={active === f
+                ? { background: "#06b6d4", color: "#000", boxShadow: "0 0 20px rgba(6,182,212,0.4)" }
+                : { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }
+              }>
               {f}
             </button>
           ))}
         </div>
 
-        {/* Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((p) => {
-            const Icon = p.icon;
-            return (
-              <div
-                key={p.name}
-                className={`card-hover glass rounded-2xl border ${p.border} p-6 flex flex-col gap-4 group relative overflow-hidden`}
-              >
-                {/* Gradient bg */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${p.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-
-                <div className="relative z-10 flex items-start justify-between">
-                  <div className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center`}>
-                    <Icon className={`w-5 h-5 ${p.accent}`} />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`tag ${p.badge}`}>{p.status}</span>
-                    {p.url !== "#" && (
-                      <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors">
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <div className="relative z-10">
-                  <h3 className="text-white font-bold text-lg leading-tight">{p.name}</h3>
-                  <p className={`text-sm font-medium ${p.accent} mb-2`}>{p.tagline}</p>
-                  <p className="text-slate-400 text-sm leading-relaxed">{p.desc}</p>
-                </div>
-
-                <div className="relative z-10 flex flex-wrap gap-1.5 mt-auto pt-2">
-                  {p.tags.map(t => (
-                    <span key={t} className="tag bg-white/5 text-slate-400 border border-white/5">{t}</span>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          {filtered.map((p, i) => <ProjectCard key={p.name} p={p} i={i} />)}
         </div>
       </div>
     </section>
